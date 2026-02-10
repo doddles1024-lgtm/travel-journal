@@ -1,0 +1,389 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.app-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+  color: #fff;
+}
+
+.app-header {
+  max-width: 1200px;
+  margin: 0 auto 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.header-content h1 {
+  font-size: 32px;
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+
+.header-content p {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.add-button {
+  padding: 12px 24px;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.add-button:hover {
+  background: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+}
+
+.add-button:active {
+  transform: translateY(0);
+}
+
+.search-container {
+  max-width: 1200px;
+  margin: 0 auto 32px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 16px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #1f2937;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.search-input:focus {
+  background: white;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.search-input::placeholder {
+  color: #9ca3af;
+}
+
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding-bottom: 40px;
+}
+
+.category-section {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.category-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+}
+
+.category-icon {
+  font-size: 28px;
+}
+
+.link-count {
+  font-size: 18px;
+  opacity: 0.7;
+  font-weight: 500;
+  margin-left: auto;
+}
+
+.links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.link-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.link-card:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.link-button {
+  width: 100%;
+  padding: 20px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  text-align: left;
+  text-decoration: none;
+  display: block;
+}
+
+.link-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  word-break: break-word;
+}
+
+.link-url {
+  font-size: 13px;
+  opacity: 0.8;
+  word-break: break-all;
+}
+
+.delete-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.9);
+  color: white;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+.link-card:hover .delete-button {
+  opacity: 1;
+}
+
+.delete-button:hover {
+  background: rgba(220, 38, 38, 1);
+  transform: scale(1.1);
+}
+
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px;
+  opacity: 0.7;
+  font-size: 16px;
+}
+
+.no-results-global {
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: white;
+  color: #1f2937;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h2 {
+  margin-bottom: 24px;
+  font-size: 24px;
+  color: #111827;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.modal-form input,
+.modal-form select {
+  padding: 12px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.2s ease;
+  outline: none;
+}
+
+.modal-form input:focus,
+.modal-form select:focus {
+  border-color: #667eea;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.cancel-button,
+.save-button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancel-button {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.cancel-button:hover {
+  background: #d1d5db;
+}
+
+.save-button {
+  background: #667eea;
+  color: white;
+}
+
+.save-button:hover {
+  background: #5568d3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-content h1 {
+    font-size: 24px;
+  }
+
+  .add-button {
+    width: 100%;
+  }
+
+  .links-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+  }
+
+  .category-section {
+    padding: 16px;
+  }
+
+  .link-name {
+    font-size: 16px;
+  }
+
+  .link-url {
+    font-size: 12px;
+  }
+}
+
+/* Snow Rider 3D game page */
+.snowrider-page {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: #000;
+}
+
+.snowrider-back {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 10;
+  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.snowrider-back:hover {
+  background: #fff;
+}
+
+.snowrider-page .webgl-content {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+}
