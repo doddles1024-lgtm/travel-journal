@@ -1,9 +1,13 @@
+import { patchAudioContext } from './volumeStore';
+patchAudioContext();
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import SnowRider from './SnowRider';
+import { SnowRiderErrorBoundary } from './SnowRiderErrorBoundary';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 
@@ -17,27 +21,39 @@ function isFetchRelatedError(msg: unknown): boolean {
   );
 }
 
-// Intercept fetch so Unity/analytics failures don't throw and trigger the error overlay
+// Swallow "Failed to fetch" for non–Unity-asset URLs (e.g. postUserData) so the game still runs
 const originalFetch = window.fetch;
 window.fetch = function (...args: Parameters<typeof fetch>) {
+  const input = args[0];
+  const url = (typeof input === 'string' ? input : (input as Request)?.url ?? '').toLowerCase();
+  const isUnityAsset = url.includes('/build/') || url.includes('.unityweb') || url.includes('.json');
   return originalFetch.apply(this, args).catch((err: unknown) => {
-    if (isFetchRelatedError(err instanceof Error ? err.message : String(err))) {
-      // Return a no-op response so callers (e.g. postUserData) don't throw
+    const msg = err instanceof Error ? err.message : String(err);
+    if (!isUnityAsset && isFetchRelatedError(msg)) {
       return new Response(null, { status: 204, statusText: 'No Content' });
     }
     throw err;
   }) as ReturnType<typeof fetch>;
 };
 
-// Cross-origin scripts (e.g. Unity from jsdelivr) trigger generic "Script error." - suppress so overlay doesn't show
+// Unity/script loading errors - suppress overlay and logs
 function isSuppressedError(message: string): boolean {
+  const m = message || '';
   return (
-    message === 'Script error.' ||
-    isFetchRelatedError(message)
+    m === 'Script error.' ||
+    m.includes("Unexpected token '<'") ||
+    m.includes('Unexpected token') ||
+    m.includes('has already been declared') ||
+    m.includes('ChunkLoadError') ||
+    m.includes('Loading chunk') ||
+    m.includes('postUserData') ||
+    m.includes('loadScript') ||
+    isFetchRelatedError(m)
   );
 }
 
 const originalConsoleError = console.error;
+const originalConsoleWarn = console.warn;
 console.error = function (...args: unknown[]) {
   const first = args[0];
   const msg =
@@ -50,6 +66,12 @@ console.error = function (...args: unknown[]) {
     return;
   }
   originalConsoleError.apply(console, args);
+};
+
+console.warn = function (...args: unknown[]) {
+  const msg = args.map((a) => (typeof a === 'string' ? a : (a as Error)?.message ?? String(a))).join(' ');
+  if (isSuppressedError(msg) || msg.includes('postUserData') || msg.includes('Unity load error')) return;
+  originalConsoleWarn.apply(console, args);
 };
 
 window.addEventListener('unhandledrejection', (event) => {
@@ -66,7 +88,8 @@ window.addEventListener('unhandledrejection', (event) => {
 window.addEventListener(
   'error',
   (event) => {
-    if (event.message === 'Script error.') {
+    const msg = event.message || (event.error && (event.error as Error).message) || '';
+    if (isSuppressedError(msg)) {
       event.preventDefault();
       event.stopImmediatePropagation();
       return false;
@@ -105,7 +128,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/snowrider" element={<SnowRider />} />
+        <Route path="/snowrider" element={<SnowRiderErrorBoundary><SnowRider /></SnowRiderErrorBoundary>} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

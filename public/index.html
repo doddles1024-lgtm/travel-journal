@@ -25,14 +25,27 @@
   </head>
   <body>
     <script>
-      // Run before React bundle so we suppress cross-origin "Script error." (e.g. from Unity) before the dev overlay
-      window.addEventListener('error', function(e) {
-        if (e.message === 'Script error.') {
-          e.preventDefault();
-          e.stopImmediatePropagation();
-          return false;
+      // Run before React bundle to suppress Unity/script errors before the dev overlay
+      (function() {
+        function suppress(m) {
+          return !m ? false : m === 'Script error.' || m.indexOf("Unexpected token") !== -1 ||
+            m.indexOf('has already been declared') !== -1 || m.indexOf('Failed to fetch') !== -1 ||
+            m.indexOf('ChunkLoadError') !== -1 || m.indexOf('Loading chunk') !== -1 ||
+            m.indexOf('NetworkError') !== -1 || m.indexOf('postUserData') !== -1;
         }
-      }, true);
+        window.addEventListener('error', function(e) {
+          var m = (e && e.message) || (e.error && e.error && e.error.message) || '';
+          if (suppress(m)) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            return false;
+          }
+        }, true);
+        window.addEventListener('unhandledrejection', function(e) {
+          var m = (e.reason && (e.reason.message || e.reason)) || '';
+          if (suppress(String(m))) e.preventDefault();
+        });
+      })();
     </script>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>

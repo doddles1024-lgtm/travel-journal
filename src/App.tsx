@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { VolumeControl } from './VolumeControl';
 import './App.css';
 
 type BypassMethod = 'proxy-only' | 'double-encode' | 'base64' | 'hex' | 'parameter-mask';
@@ -269,6 +270,7 @@ function App() {
           <h1>🎯 Quick Links</h1>
           <p>Find apps, games, and more</p>
         </div>
+        <VolumeControl />
       </header>
 
       <div className="search-container">

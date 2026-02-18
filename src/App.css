@@ -363,11 +363,20 @@ body {
   background: #000;
 }
 
-.snowrider-back {
+.snowrider-top-bar {
   position: absolute;
-  top: 12px;
-  left: 12px;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  gap: 12px;
+}
+
+.snowrider-back {
   padding: 8px 14px;
   background: rgba(255, 255, 255, 0.9);
   color: #333;
@@ -386,4 +395,108 @@ body {
   flex: 1;
   width: 100%;
   min-height: 0;
+}
+
+.snowrider-error-boundary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.snowrider-top-bar .volume-control {
+  --volume-bg: rgba(255, 255, 255, 0.9);
+}
+
+.snowrider-error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #c00;
+  border-radius: 12px;
+  text-align: center;
+  z-index: 20;
+}
+
+/* Volume control */
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.volume-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background 0.2s;
+}
+
+.volume-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.snowrider-top-bar .volume-btn {
+  background: var(--volume-bg, rgba(255, 255, 255, 0.9));
+  color: #333;
+}
+
+.snowrider-top-bar .volume-btn:hover {
+  background: #fff;
+}
+
+.volume-slider-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.volume-percent {
+  font-size: 13px;
+  font-weight: 600;
+  min-width: 36px;
+  opacity: 0.9;
+}
+
+.snowrider-top-bar .volume-percent {
+  color: #333;
+}
+
+.volume-slider {
+  width: 90px;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
 }
